@@ -1,95 +1,47 @@
-MERN Authentication Dashboard
+# MERN Authentication Dashboard
 
-A full-stack MERN authentication and task management dashboard built with a strong focus on security, scalability, and clean architecture.
-This project demonstrates real-world frontend–backend integration using JWT authentication, protected routes, and a modern responsive UI.
+A full-stack **MERN Authentication and Task Management Dashboard** built with a focus on **security, scalability, and clean architecture**.  
+This project demonstrates real-world **JWT-based authentication**, **protected routes**, and **frontend–backend integration**.
 
-📌 Project Overview
+---
 
-The application allows users to:
+## Features
 
-Register and log in securely
+### Authentication
+- User registration and login
+- JWT-based authentication
+- Password hashing using bcrypt
+- Protected frontend and backend routes
 
-Access a protected dashboard
+### Dashboard & Tasks
+- Display logged-in user profile
+- Create, read, update, delete tasks (CRUD)
+- Mark tasks as completed
+- Search and filter tasks
+- Secure logout
 
-Manage tasks with full CRUD operations
+### Security & Scalability
+- Hashed passwords (bcrypt)
+- JWT verification middleware
+- Authorization required for protected APIs
+- Centralized error handling
+- Modular backend architecture
 
-Search and filter tasks
+---
 
-Log out securely
+## Tech Stack
 
-The backend exposes secure APIs, and the frontend consumes them using token-based authentication.
+- **Frontend:** React (Vite), Tailwind CSS, React Router DOM
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (Mongoose, MongoDB Atlas)
+- **Authentication:** JWT, bcryptjs
+- **Tools:** Postman, Git & GitHub
 
-🚀 Features
-Authentication
+---
 
-User registration and login
+## Project Structure
 
-JWT-based authentication
-
-Password hashing using bcrypt
-
-Protected frontend and backend routes
-
-Dashboard
-
-Display logged-in user profile
-
-Create, read, update, delete tasks
-
-Mark tasks as completed
-
-Search and filter tasks
-
-Logout functionality
-
-Security
-
-Hashed passwords (bcrypt)
-
-JWT verification middleware
-
-Authorization required for protected APIs
-
-Centralized error handling
-
-Scalability
-
-Modular backend architecture
-
-Separation of concerns (routes, controllers, models, middleware)
-
-Easy to extend with roles, pagination, or additional entities
-
-🛠 Tech Stack
-Frontend
-
-React (Vite)
-
-Tailwind CSS
-
-React Router DOM
-
-Backend
-
-Node.js
-
-Express.js
-
-MongoDB with Mongoose
-
-JWT (JSON Web Tokens)
-
-bcryptjs
-
-Tools
-
-MongoDB Atlas
-
-Postman
-
-Git & GitHub
-
-📂 Project Structure
+```bash
 mern-auth-dashboard/
 │
 ├── frontend/
@@ -115,6 +67,7 @@ mern-auth-dashboard/
 │   └── package.json
 │
 └── README.md
+
 
 ⚙️ Environment Variables
 
