@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import API_BASE_URL from "../services/api";
+import API from "../services/api"; // your axios instance
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -13,22 +13,12 @@ export default function RegisterPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message || "Registration failed");
-        return;
-      }
-
+      const res = await API.post("/api/auth/register", { name, email, password });
+      // Axios automatically throws for non-2xx status codes, so no need for res.ok
       navigate("/login");
     } catch (err) {
       console.error(err);
-      setError("Network error");
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
@@ -80,4 +70,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-

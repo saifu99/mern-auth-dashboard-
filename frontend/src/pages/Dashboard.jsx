@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API_BASE_URL from "../services/api";
+import API from "../services/api"; // your axios instance
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -14,28 +14,25 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  //Redirect if not authenticated
+  // Redirect if not authenticated
   useEffect(() => {
     if (!token) navigate("/login");
   }, [token, navigate]);
 
-  //Fetch profile+tasks
+  // Fetch profile + tasks
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await fetch(`${API_BASE_URL}/api/users/me`, {
+        const userRes = await API.get("/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const taskRes = await fetch(`${API_BASE_URL}/api/tasks`, {
+        const taskRes = await API.get("/api/tasks", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const userData = await userRes.json();
-        const taskData = await taskRes.json();
-
-        setUser(userData);
-        setTasks(taskData);
+        setUser(userRes.data);
+        setTasks(taskRes.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -63,54 +60,48 @@ export default function Dashboard() {
     if (!title.trim()) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title, description }),
-      });
+      const res = await API.post(
+        "/api/tasks",
+        { title, description },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message || "Failed to add task");
-        return;
-      }
-
-      setTasks([data, ...tasks]);
+      setTasks([res.data, ...tasks]);
       setTitle("");
       setDescription("");
       setError("");
-    } catch {
-      setError("Network error");
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Failed to add task");
     }
   };
 
   const toggleComplete = async (id, completed) => {
-    await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ completed: !completed }),
-    });
+    try {
+      await API.put(
+        `/api/tasks/${id}`,
+        { completed: !completed },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    setTasks((prev) =>
-      prev.map((t) =>
-        t._id === id ? { ...t, completed: !completed } : t
-      )
-    );
+      setTasks((prev) =>
+        prev.map((t) => (t._id === id ? { ...t, completed: !completed } : t))
+      );
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteTask = async (id) => {
-    await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      await API.delete(`/api/tasks/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    setTasks((prev) => prev.filter((t) => t._id !== id));
+      setTasks((prev) => prev.filter((t) => t._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (loading) {
@@ -189,25 +180,19 @@ export default function Dashboard() {
                   <div>
                     <h3
                       className={`font-medium ${
-                        task.completed
-                          ? "line-through text-gray-400"
-                          : ""
+                        task.completed ? "line-through text-gray-400" : ""
                       }`}
                     >
                       {task.title}
                     </h3>
                     {task.description && (
-                      <p className="text-sm text-gray-500">
-                        {task.description}
-                      </p>
+                      <p className="text-sm text-gray-500">{task.description}</p>
                     )}
                   </div>
 
                   <div className="flex gap-2">
                     <button
-                      onClick={() =>
-                        toggleComplete(task._id, task.completed)
-                      }
+                      onClick={() => toggleComplete(task._id, task.completed)}
                       className={`px-2 py-1 text-sm rounded ${
                         task.completed
                           ? "bg-yellow-400"
@@ -232,9 +217,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-
-
-
-
-

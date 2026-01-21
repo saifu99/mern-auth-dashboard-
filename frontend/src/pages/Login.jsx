@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import API_BASE_URL from "../services/api";
+import API from "../services/api"; // <-- axios instance
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,23 +12,12 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
+      const res = await API.post("/api/auth/login", { email, password });
+      localStorage.setItem("token", res.data.token); // save JWT
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
-      setError("Network error");
+      setError(err.response?.data?.message || "Network error");
     }
   };
 
