@@ -125,22 +125,3 @@ A Postman collection is included in the repo (`MERN-Auth-Dashboard.postman_colle
 You can run the backend locally (`npm run dev` in `backend`) and use this collection to verify all endpoints.
 
 ---
-
-## Scaling Frontend-Backend for Production
-
-Even without deployment, this is the recommended production setup:
-
-1. **Environment Variables:** Use `.env` for sensitive data (DB URI, JWT_SECRET).  
-2. **Frontend Deployment:** Host React app on **Vercel/Netlify**.  
-3. **Backend Deployment:** Host Node.js API on **Render/Heroku** or any cloud server with HTTPS.  
-4. **Security:**  
-   - Use HTTPS for API calls  
-   - Implement refresh tokens and session expiration  
-   - Centralized error handling and input validation  
-5. **Code Architecture:**  
-   - Keep backend modular: separate routes, controllers, models, middleware  
-   - Frontend: use context for auth, protected routes, and component-level state management  
-6. **Scalability Potential:**  
-   - Backend: Add roles, pagination, caching, or microservices  
-   - Frontend: Lazy load components, optimize bundle size, and handle token refresh seamlessly
-
