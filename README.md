@@ -70,8 +70,9 @@ mern-auth-dashboard/
 │
 └── README.md
 
+---
 
-⚙️ Environment Variables
+## Environment Variables
 
 Create a .env file inside the backend directory:
 
@@ -79,27 +80,26 @@ PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 
+## Setup Instructions
+
 ▶️ Run the Project Locally
-1️⃣ Clone the repository
-git clone https://github.com/saifu99/mern-auth-dashboard.git
+1. Clone the repository
+git clone https://github.com/your-username/mern-auth-dashboard.git
 cd mern-auth-dashboard
 
-2️⃣ Start Backend
+2. Backend Setup
 cd backend
 npm install
+cp .env.example .env   # add MongoDB URI and JWT_SECRET
 npm run dev
 
-
 Backend runs at:
-
 http://localhost:5000
 
-3️⃣ Start Frontend
-cd frontend
+3. Frontend Setup
+cd ../frontend
 npm install
 npm run dev
 
-
 Frontend runs at:
-
 http://localhost:5173
