@@ -70,7 +70,6 @@ mern-auth-dashboard/
 │
 └── README.md
 
----
 
 ## Environment Variables
 
